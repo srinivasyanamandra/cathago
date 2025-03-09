@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Core System{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="hero-section">
+        <h1>Welcome to the Core System</h1>
+        <p>Your one-stop solution for secure authentication and user management.</p>
+        <div class="buttons">
+            <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+            <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .home-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 180px);
+        text-align: center;
+    }
+
+    .hero-section {
+        background: white;
+        padding: 3rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-section h1 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .hero-section p {
+        font-size: 1.1rem;
+        color: var(--secondary-color);
+        margin-bottom: 2rem;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Review Credit Request{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Review Credit Request</h1>
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Request Details</h2>
+        <p><strong>User:</strong> {{ credit_request.user.username }}</p>
+        <p><strong>Requested Credits:</strong> {{ credit_request.requested_credits }}</p>
+        <p><strong>Date:</strong> {{ credit_request.request_date }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-buttons">
+                <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+                <button type="submit" name="action" value="deny" class="btn btn-danger">Deny</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

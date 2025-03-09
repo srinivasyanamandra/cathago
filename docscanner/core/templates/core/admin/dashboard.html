@@ -1,0 +1,217 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+        <ul>
+            <li><a href="#pending-requests">Pending Credit Requests</a></li>
+            <li><a href="#users">Users</a></li>
+            <li><a href="#analytics">Analytics</a></li>
+        </ul>
+    </nav>
+
+    <!-- Pending Credit Requests Section -->
+    <div class="dashboard-section" id="pending-requests">
+        <h2>Pending Credit Requests</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Requested Credits</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in pending_requests %}
+                    <tr>
+                        <td>{{ request.user.username }}</td>
+                        <td>{{ request.requested_credits }}</td>
+                        <td>{{ request.request_date }}</td>
+                        <td>
+                            <a href="{% url 'review_credit_request' request.id %}" class="btn btn-success">Review</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Users Section -->
+    <div class="dashboard-section" id="users">
+        <h2>Users</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Credits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.credits }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Analytics Section -->
+    <div class="dashboard-section" id="analytics">
+        <h2>Analytics</h2>
+        
+        <!-- Scans Per User -->
+        <div class="table-responsive">
+            <h3>Scans Per User</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Total Scans</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in scans_per_user %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.total_scans }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Top Users by Credit Usage -->
+        <div class="table-responsive">
+            <h3>Top Users by Credit Usage</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Credits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in top_users_by_credits %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.credits }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Credit Usage Statistics -->
+        <div class="table-responsive">
+            <h3>Credit Usage Statistics</h3>
+            <p>Total Credits Used: {{ credit_usage_stats.total_credits }}</p>
+            
+            <h4>Approved Credits Per User</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Total Approved Credits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in approved_credits_per_user %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.total_approved_credits|default:0 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Basic Styling for the Dashboard */
+    .dashboard-container {
+        padding: 20px;
+    }
+
+    .dashboard-nav {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    .dashboard-nav ul li {
+        display: inline;
+    }
+
+    .dashboard-nav ul li a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .dashboard-nav ul li a:hover {
+        text-decoration: underline;
+    }
+
+    .dashboard-section {
+        margin-bottom: 40px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .btn {
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
+{% endblock %}

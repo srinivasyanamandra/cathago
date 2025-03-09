@@ -1,0 +1,47 @@
+<!-- core/templates/core/user/matches.html -->
+{% extends 'core/base.html' %}
+
+{% block title %}Matching Documents{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Matching Documents</h1>
+    </div>
+
+    <div class="dashboard-section">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User</th>  <!-- New column for the user who uploaded the document -->
+                    <th>Scan Type</th>
+                    <th>Scan Date</th>
+                    {% if scan_type == 'Default Scan' %}
+                        <th>Similarity</th>
+                        <th>Distance</th>
+                    {% else %}
+                        <th>Similarity</th>
+                    {% endif %}
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in matches %}
+                <tr>
+                    <td>{{ match.user }}</td>  <!-- Display the user who uploaded the document -->
+                    <td>{{ match.scan_type }}</td>
+                    <td>{{ match.scan_date }}</td>
+                    {% if scan_type == 'Default Scan' %}
+                        <td>{{ match.similarity|floatformat:2 }}</td>
+                        <td>{{ match.distance }}</td>
+                    {% else %}
+                        <td>{{ match.similarity|floatformat:2 }}</td>
+                    {% endif %}
+                    <td><a href="{{ match.download_url }}" class="btn btn-primary">Download</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

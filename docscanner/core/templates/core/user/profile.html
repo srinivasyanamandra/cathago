@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Welcome, {{ user.username }}</h1>
+        <p>Credits: {{ user.credits }}</p>
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Request More Credits</h2>
+        {% if user.credits >= 20 %}
+            <p class="alert alert-info">You cannot request credits because your current credits are already at the maximum limit of 20.</p>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ credit_form.requested_credits.label_tag }}
+                    {{ credit_form.requested_credits }}
+                    {% if credit_form.requested_credits.errors %}
+                        <div class="error-message">{{ credit_form.requested_credits.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Request Credits</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Scan History</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scan Type</th>
+                        <th>Result</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for scan in scans %}
+                    <tr>
+                        <td>{{ scan.scan_type }}</td>
+                        <td>{{ scan.result }}</td>
+                        <td>{{ scan.scan_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'export_scan_history' %}" class="btn btn-primary">Export Scan History</a>
+        </div>
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Credit Requests</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Requested Credits</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in credit_requests %}
+                    <tr>
+                        <td>{{ request.requested_credits }}</td>
+                        <td>{{ request.status }}</td>
+                        <td>{{ request.request_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
